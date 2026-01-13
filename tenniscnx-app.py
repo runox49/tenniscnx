@@ -73,7 +73,7 @@ data = [
         "desc_en": "Historic club with rare grass courts and a classic atmosphere.",
         "desc_cn": "百年历史老牌俱乐部。有罕见的草地场，老钱风氛围感拉满。",
         "url": "https://maps.app.goo.gl/6U2N2S2Xp2X1z0N22"
-    }
+    },
     {
         "id": "triple-ace",
         "name_en": "TripleAce Tennis Club", 
