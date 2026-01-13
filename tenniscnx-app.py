@@ -8,23 +8,32 @@ st.set_page_config(
     page_icon="🎾"
 )
 
-# 2. 注入自定义网球风格 CSS
+# 2. 增强版 CSS (适配深色/浅色模式)
 st.markdown("""
     <style>
-    .stApp { background-color: #fcfdf9; }
+    /* 确保在深色模式下，描述文字也能清晰可见 */
+    .stMarkdown, p, span, label {
+        color: inherit !important;
+    }
+    
+    /* 强制标题在深色模式下呈现醒目的亮色，在浅色模式下呈现深绿色 */
+    h1, h2, h3 {
+        color: #d4f01e !important; /* 网球黄，深浅背景都清晰 */
+    }
+
+    /* 按钮样式优化 */
     .stButton>button {
         width: 100%;
         background-color: #2d5a27;
-        color: white;
+        color: white !important;
         border-radius: 20px;
-        border: none;
+        border: 2px solid #d4f01e;
     }
-    .stButton>button:hover {
-        background-color: #d4f01e;
-        color: #2d5a27;
-        border: 1px solid #2d5a27;
+    
+    /* 针对深色模式的容器微调 */
+    [data-testid="stVerticalBlock"] > div > div {
+        border-color: rgba(212, 240, 30, 0.3) !important;
     }
-    h1, h2, h3 { color: #2d5a27 !important; }
     </style>
     """, unsafe_allow_html=True)
 
