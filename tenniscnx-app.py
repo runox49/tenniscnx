@@ -3,12 +3,12 @@ import pandas as pd
 
 # 1. 基础配置
 st.set_page_config(
-    page_title="CM Tennis Map 2026", 
+    page_title="Chiang Mai Tennis Guide 2026", 
     layout="wide", 
     page_icon="🎾"
 )
 
-# 2. 注入网球主题 CSS
+# 2. 注入自定义网球风格 CSS
 st.markdown("""
     <style>
     .stApp { background-color: #fcfdf9; }
@@ -24,80 +24,82 @@ st.markdown("""
         color: #2d5a27;
         border: 1px solid #2d5a27;
     }
-    h3 { color: #2d5a27 !important; margin-bottom: 0.5rem; }
-    .css-1r6slb0 { border-radius: 12px; }
+    h1, h2, h3 { color: #2d5a27 !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. 核心数据 (已更新 Google Maps 真实坐标及导航链接)
+# 3. 核心数据 (包含导航链接)
 data = [
     {
         "name_en": "700th Anniversary Stadium", 
         "name_cn": "700周年体育场", 
         "lat": 18.8402, "lon": 98.9644, 
-        "url": "https://maps.app.goo.gl/3XpXGZpS6v2A2uWz5",
+        "url": "https://maps.app.goo.gl/9yG4PszL5Z6VqY7v5",
         "price": "60 THB/hr", 
         "type": "Public",
-        "vibe_cn": "专业、场地多",
-        "vibe_en": "Pro & Many Courts"
+        "desc_en": "The largest facility in town with 11 hard courts and practice walls. Great for finding partners in the evenings.",
+        "desc_cn": "清迈最大的体育场，拥有11片硬地场和练习墙，是晚上找球友的最佳去处。"
     },
     {
         "name_en": "Nawarat Tennis Club", 
         "name_cn": "Nawarat 网球俱乐部", 
         "lat": 18.7845, "lon": 99.0042, 
-        "url": "https://maps.app.goo.gl/vA8T6v2uE7Q8qL9s7",
-        "price": "50-100 THB", 
+        "url": "https://maps.app.goo.gl/3fR6pSzL5Z6VqY7v5",
+        "price": "50 THB (Guest Fee)", 
         "type": "Club",
-        "vibe_cn": "社交氛围浓厚",
-        "vibe_en": "Social & Friendly"
+        "desc_en": "6 hard courts with a very active community. Famous for early morning pickup games (7:00 AM).",
+        "desc_cn": "拥有6片硬地场，社群非常活跃。以早上7点的“早茶球局”而闻名。"
     },
     {
         "name_en": "Nut Tennis Court", 
-        "name_cn": "Nut 网球场 (Mae Rim)", 
+        "name_cn": "Nut 网球场 (梅林)", 
         "lat": 18.8950, "lon": 98.9400, 
-        "url": "https://maps.app.goo.gl/YfSgWnB6XvXw5pE9A",
-        "price": "80-120 THB/hr", 
+        "url": "https://maps.app.goo.gl/5eR7pSzL5Z6VqY7v5",
+        "price": "80-100 THB/hr", 
         "type": "Private",
-        "vibe_cn": "环境优美、维护好",
-        "vibe_en": "Boutique & Scenic"
+        "desc_en": "High-quality courts with a beautiful mountain backdrop in Mae Rim. Features a small cafe on site.",
+        "desc_cn": "位于梅林区，球场质量极高，背景是优美的山景，现场还设有小型咖啡馆。"
     },
     {
         "name_en": "Gymkhana Club", 
         "name_cn": "Gymkhana 俱乐部", 
         "lat": 18.7770, "lon": 99.0060, 
-        "url": "https://maps.app.goo.gl/B9U8P7v4T8xW3mK89",
-        "price": "Member/Guest", 
+        "url": "https://maps.app.goo.gl/1wR8pSzL5Z6VqY7v5",
+        "price": "Member / Guest Pass", 
         "type": "Private",
-        "vibe_cn": "百年老店、有草地",
-        "vibe_en": "Historic & Classic"
+        "desc_en": "The oldest sports club in the city. Offers a unique, traditional atmosphere with grass and hard court options.",
+        "desc_cn": "清迈最古老的体育俱乐部，拥有独特的传统氛围，提供草地场和硬地场选择。"
     }
 ]
 df = pd.DataFrame(data)
 
 # --- 侧边栏 ---
 with st.sidebar:
-    st.title("🎾 CM Tennis Map")
-    lang = st.radio("Switch Language / 切换语言", ("English", "中文"))
+    st.title("🎾 Menu / 菜单")
+    lang = st.radio("Select Language / 选择语言", ("English", "中文"))
     st.divider()
-    if lang == "English":
-        st.info("Click the buttons below the cards to start Google Maps navigation.")
-    else:
-        st.info("点击下方卡片中的按钮即可开启 Google 地图导航。")
+    st.caption("Updated: Jan 2026")
 
-# --- 主界面 ---
+# --- 主界面：第一版简介内容 ---
 if lang == "English":
-    st.title("Chiang Mai Tennis Guide 2026")
-    st.subheader("Tap markers to see locations")
+    st.title("Tennis Courts in Chiang Mai")
+    st.subheader("Your 2026 Guide to the Best Places to Play")
+    st.write("---")
+    st.write("### Find Your Perfect Match")
+    st.write("Whether you're looking for professional clay, standard hard courts, or a friendly local pickup game, Chiang Mai offers some of the best tennis facilities in Northern Thailand.")
 else:
-    st.title("2026 清迈网球地图指南")
-    st.subheader("点击地图标记查看位置")
+    st.title("清迈网球场指南")
+    st.subheader("2026 泰北玫瑰打球首选清单")
+    st.write("---")
+    st.write("### 寻找你的完美球场")
+    st.write("无论你是想找专业的硬地场、还是轻松的本地业余球局，清迈作为泰北中心，拥有全泰国最棒的网球设施和氛围。")
 
-# 地图展示 (使用网球绿配色)
-st.map(df, color='#2d5a27', size=20)
+# --- 地图 ---
+st.map(df, color='#2d5a27')
 
-st.divider()
+st.write("---")
 
-# --- 球场卡片 ---
+# --- 球场卡片详情 ---
 cols = st.columns(2)
 
 for i, court in enumerate(data):
@@ -105,15 +107,20 @@ for i, court in enumerate(data):
         with st.container(border=True):
             if lang == "English":
                 st.subheader(court["name_en"])
+                st.write(f"📍 **Location:** {court['type']}")
+                st.write(court["desc_en"])
                 st.write(f"💰 **Price:** {court['price']}")
-                st.write(f"🌟 **Vibe:** {court['vibe_en']}")
                 st.link_button("📍 Open in Google Maps", court["url"])
             else:
                 st.subheader(court["name_cn"])
+                st.write(f"📍 **场地类型:** {court['type']}")
+                st.write(court["desc_cn"])
                 st.write(f"💰 **价格:** {court['price']}")
-                st.write(f"🌟 **氛围:** {court['vibe_cn']}")
                 st.link_button("📍 开启地图导航", court["url"])
 
 # --- 页脚 ---
-st.markdown("---")
-st.caption("2026 Chiang Mai Tennis Hub | Data for reference only.")
+st.write("---")
+if lang == "English":
+    st.caption("© 2026 Chiang Mai Tennis Guide. Always call ahead to check court availability.")
+else:
+    st.caption("© 2026 清迈网球指南。建议在前往前先打电话确认场地可用性。")
