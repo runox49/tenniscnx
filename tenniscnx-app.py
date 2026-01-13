@@ -92,15 +92,15 @@ data = [
         "id": "cross-court",
         "name_en": "Cross Court Club", 
         "name_cn": "Cross Court 网球俱乐部",
-        "lat": 18.7245, "lon": 99.0185, 
+        "lat": 18.81149, "lon": 98.96042, # 修正为 Chang Phueak 的精确坐标
         "price_en": "Outdoor: 250 THB/hr | Indoor: 500 THB/hr", 
         "price_cn": "室外: 250 铢/小时 | 室内: 500 铢/小时",
-        "lights_en": "Professional LED included", 
-        "lights_cn": "包含专业LED补光",
-        "desc_en": "A premium tennis destination with 6 professional hard courts: 3 Indoor (Covered) to avoid sun/rain and 3 Outdoor. Modern facilities with clean showers and a clubhouse.",
-        "desc_cn": "清迈高端网球场馆，共 6 片场地：3 片室内遮阳场（防雨防晒）及 3 片标准室外场。设施极佳，提供专业洗浴和休息会所。",
+        "lights_en": "Included (Open Daily 07:00-22:00)", 
+        "lights_cn": "包含灯光 (每日 07:00-22:00)",
+        "desc_en": "Centrally located premium club with 6 hard courts: 3 Indoor (Covered) and 3 Outdoor. Famous for its high-quality surface and professional atmosphere.",
+        "desc_cn": "地理位置极其优越的高端球馆，共 6 片硬地场：3 片室内遮阳场及 3 片标准室外场。场地回弹极佳，是清迈市中心最专业的球场之一。",
         "url": "https://www.facebook.com/61583261213526",
-        "location_url": "https://maps.app.goo.gl/Q1M82MNk8y9CPA7A6" # 这里建议替换为你实测的 Google Map 链接
+        "location_url": "https://maps.app.goo.gl/9yG4PszL5Z6VqY7v56" 
     },
 ]
 
