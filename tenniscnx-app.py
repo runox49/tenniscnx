@@ -74,6 +74,20 @@ data = [
         "desc_cn": "百年历史老牌俱乐部。有罕见的草地场，老钱风氛围感拉满。",
         "url": "https://maps.app.goo.gl/6U2N2S2Xp2X1z0N22"
     }
+    {
+        "id": "triple-ace",
+        "name_en": "TripleAce Tennis Club", 
+        "name_cn": "TripleAce 网球俱乐部",
+        "lat": 18.7291, "lon": 99.0156, # 位于 Saraphi 真实坐标
+        "price_en": "Check Website for Booking", 
+        "price_cn": "官网实时预订",
+        "lights_en": "Professional LED included", 
+        "lights_cn": "包含专业LED照明",
+        "desc_en": "Premium all-weather venue with membrane structure roofing. Features 4 pro hard courts and 5 Touchtennis courts. Partnered with Nut Tennis Academy.",
+        "desc_cn": "清迈顶级全天候球馆，采用膜结构顶棚。拥有4片专业硬地和5片Touchtennis场地。由Nut Tennis Academy提供顶尖教练教学。",
+        "url": "https://www.3aclubs.com/",
+        "location_url": "https://maps.app.goo.gl/pLks2pYg3v1B78j87" 
+    },
 ]
 
 # --- 侧边栏 ---
