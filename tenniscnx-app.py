@@ -1,135 +1,102 @@
 import streamlit as st
 import pandas as pd
+import folium
+from streamlit_folium import st_folium
 
-# 1. 基础配置
-st.set_page_config(
-    page_title="Chiang Mai Tennis Guide 2026", 
-    layout="wide", 
-    page_icon="🎾"
-)
+# 1. 页面配置
+st.set_page_config(page_title="CM Tennis Guide", layout="wide")
 
-# 2. 增强版 CSS (适配深色/浅色模式)
+# 2. CSS 修复深色模式文字消失
 st.markdown("""
     <style>
-    /* 确保在深色模式下，描述文字也能清晰可见 */
-    .stMarkdown, p, span, label {
-        color: inherit !important;
-    }
-    
-    /* 强制标题在深色模式下呈现醒目的亮色，在浅色模式下呈现深绿色 */
-    h1, h2, h3 {
-        color: #d4f01e !important; /* 网球黄，深浅背景都清晰 */
-    }
-
-    /* 按钮样式优化 */
-    .stButton>button {
-        width: 100%;
-        background-color: #2d5a27;
-        color: white !important;
-        border-radius: 20px;
-        border: 2px solid #d4f01e;
-    }
-    
-    /* 针对深色模式的容器微调 */
-    [data-testid="stVerticalBlock"] > div > div {
-        border-color: rgba(212, 240, 30, 0.3) !important;
-    }
+    .stApp, p, span { color: inherit !important; }
+    h1, h2, h3 { color: #d4f01e !important; }
+    .stButton>button { background-color: #2d5a27; color: white !important; border-radius: 15px; }
+    /* 让地图容器有圆角 */
+    .folium-map { border-radius: 12px; }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. 核心数据 (包含导航链接)
+# 3. 核心数据 (含真实经纬度与信息)
 data = [
     {
-        "name_en": "700th Anniversary Stadium", 
-        "name_cn": "700周年体育场", 
-        "lat": 18.8402, "lon": 98.9644, 
-        "url": "https://maps.app.goo.gl/Rx8sPD8MbubymMqB7",
-        "price": "60 THB/hr", 
-        "type": "Public",
-        "desc_en": "The largest facility in town with 11 hard courts and practice walls. Great for finding partners in the evenings.",
-        "desc_cn": "清迈最大的体育场，拥有11片硬地场和练习墙，是晚上找球友的最佳去处。"
+        "name": "700th Anniversary Stadium / 700周年体育场",
+        "lat": 18.8396, "lon": 98.9594,
+        "price": "60-80 THB/hr",
+        "desc": "清迈最大的公立场地，拥有11片硬地场。傍晚非常热闹。",
+        "url": "https://www.google.com/maps/search/?api=1&query=700th+Anniversary+of+Chiang+Mai+Stadium"
     },
     {
-        "name_en": "Nawarat Tennis Club", 
-        "name_cn": "Nawarat 网球俱乐部", 
-        "lat": 18.7845, "lon": 99.0042, 
-        "url": "https://maps.app.goo.gl/3fR6pSzL5Z6VqY7v5",
-        "price": "50 THB (Guest Fee)", 
-        "type": "Club",
-        "desc_en": "6 hard courts with a very active community. Famous for early morning pickup games (7:00 AM).",
-        "desc_cn": "拥有6片硬地场，社群非常活跃。以早上7点的“早茶球局”而闻名。"
+        "name": "Nawarat Tennis Club / Nawarat 俱乐部",
+        "lat": 18.7958, "lon": 98.9962,
+        "price": "50-100 THB (Guest)",
+        "desc": "社交氛围全城最好，适合单人前往加入早晨7点的球局。",
+        "url": "https://www.google.com/maps/search/?api=1&query=Nawarath+Tennis+Club"
     },
     {
-        "name_en": "Nut Tennis Court", 
-        "name_cn": "Nut 网球场 (梅林)", 
-        "lat": 18.8950, "lon": 98.9400, 
-        "url": "https://maps.app.goo.gl/5eR7pSzL5Z6VqY7v5",
-        "price": "80-100 THB/hr", 
-        "type": "Private",
-        "desc_en": "High-quality courts with a beautiful mountain backdrop in Mae Rim. Features a small cafe on site.",
-        "desc_cn": "位于梅林区，球场质量极高，背景是优美的山景，现场还设有小型咖啡馆。"
+        "name": "Nut Tennis Court / Nut 网球场",
+        "lat": 18.8475, "lon": 98.9541,
+        "price": "100-120 THB/hr",
+        "desc": "梅林区高品质私人球场，环境安静且维护极好。",
+        "url": "https://www.google.com/maps/search/?api=1&query=Nut+Tennis+Court"
     },
     {
-        "name_en": "Gymkhana Club", 
-        "name_cn": "Gymkhana 俱乐部", 
-        "lat": 18.7770, "lon": 99.0060, 
-        "url": "https://maps.app.goo.gl/1wR8pSzL5Z6VqY7v5",
-        "price": "Member / Guest Pass", 
-        "type": "Private",
-        "desc_en": "The oldest sports club in the city. Offers a unique, traditional atmosphere with grass and hard court options.",
-        "desc_cn": "清迈最古老的体育俱乐部，拥有独特的传统氛围，提供草地场和硬地场选择。"
+        "name": "Gymkhana Club / Gymkhana 俱乐部",
+        "lat": 18.7749, "lon": 99.0090,
+        "price": "150-300 THB (Guest)",
+        "desc": "百年历史俱乐部，提供清迈罕见的草地场体验。",
+        "url": "https://www.google.com/maps/search/?api=1&query=Chiang+Mai+Gymkhana+Club"
     }
 ]
-df = pd.DataFrame(data)
 
-# --- 侧边栏 ---
-with st.sidebar:
-    st.title("🎾 Menu / 菜单")
-    lang = st.radio("Select Language / 选择语言", ("English", "中文"))
-    st.divider()
-    st.caption("Updated: Jan 2026")
+# --- 界面展示 ---
+st.title("🎾 清迈网球指南 2026")
 
-# --- 主界面：第一版简介内容 ---
-if lang == "English":
-    st.title("Tennis Courts in Chiang Mai")
-    st.subheader("Your 2026 Guide to the Best Places to Play")
-    st.write("---")
-    st.write("### Find Your Perfect Match")
-    st.write("Whether you're looking for professional clay, standard hard courts, or a friendly local pickup game, Chiang Mai offers some of the best tennis facilities in Northern Thailand.")
-else:
-    st.title("清迈网球场指南")
-    st.subheader("2026 泰北玫瑰打球首选清单")
-    st.write("---")
-    st.write("### 寻找你的完美球场")
-    st.write("无论你是想找专业的硬地场、还是轻松的本地业余球局，清迈作为泰北中心，拥有全泰国最棒的网球设施和氛围。")
+# 创建两列布局：左侧是小地图，右侧是简介
+col_map, col_info = st.columns([1, 1])
 
-# --- 地图 ---
-st.map(df, color='#2d5a27')
+with col_map:
+    st.write("### 📍 交互地图")
+    # 创建 Folium 地图对象
+    m = folium.Map(location=[18.8100, 98.9800], zoom_start=12, tiles="OpenStreetMap")
+    
+    # 添加点击可交互的 POI
+    for point in data:
+        popup_content = f"""
+        <div style="font-family: sans-serif; min-width: 150px;">
+            <h4 style="margin:0; color:#2d5a27;">{point['name']}</h4>
+            <p style="margin:5px 0; font-size:12px;">{point['desc']}</p>
+            <a href="{point['url']}" target="_blank" style="color:#d4f01e; font-weight:bold;">开启导航</a>
+        </div>
+        """
+        folium.Marker(
+            [point["lat"], point["lon"]],
+            popup=popup_content,
+            tooltip=point["name"],
+            icon=folium.Icon(color="green", icon="info-sign")
+        ).add_to(m)
+    
+    # 在 Streamlit 中渲染地图（限制高度使其“变小”）
+    map_data = st_folium(m, height=400, width=None)
 
-st.write("---")
+with col_info:
+    st.write("### 📝 选定球场简要信息")
+    # 逻辑：如果用户点击了地图上的 POI，在右侧显示详细信息
+    if map_data and map_data.get("last_object_clicked_tooltip"):
+        clicked_name = map_data["last_object_clicked_tooltip"]
+        # 寻找对应的数据
+        selected_court = next((item for item in data if item["name"] == clicked_name), None)
+        
+        if selected_court:
+            st.success(f"已选中: {selected_court['name']}")
+            st.write(f"💰 **价格:** {selected_court['price']}")
+            st.write(f"📖 **简介:** {selected_court['desc']}")
+            st.link_button("🚀 立即导航前往", selected_court["url"])
+    else:
+        st.info("请在左侧地图上点击球场图标，查看详细费用与说明。")
 
-# --- 球场卡片详情 ---
-cols = st.columns(2)
+st.divider()
 
-for i, court in enumerate(data):
-    with cols[i % 2]:
-        with st.container(border=True):
-            if lang == "English":
-                st.subheader(court["name_en"])
-                st.write(f"📍 **Type:** {court['type']}")
-                st.write(court["desc_en"])
-                st.write(f"💰 **Price:** {court['price']}")
-                st.link_button("📍 Open in Google Maps", court["url"])
-            else:
-                st.subheader(court["name_cn"])
-                st.write(f"📍 **场地类型:** {court['type']}")
-                st.write(court["desc_cn"])
-                st.write(f"💰 **价格:** {court['price']}")
-                st.link_button("📍 开启地图导航", court["url"])
-
-# --- 页脚 ---
-st.write("---")
-if lang == "English":
-    st.caption("© 2026 Chiang Mai Tennis Guide. Always call ahead to check court availability.")
-else:
-    st.caption("© 2026 清迈网球指南。建议在前往前先打电话确认场地可用性。")
+# --- 底部列表（备选） ---
+st.write("### 📋 快速概览")
+st.dataframe(pd.DataFrame(data)[["name", "price"]], use_container_width=True)
