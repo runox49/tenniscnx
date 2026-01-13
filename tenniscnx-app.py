@@ -34,7 +34,7 @@ data = [
         "name_en": "700th Anniversary Stadium", 
         "name_cn": "700周年体育场", 
         "lat": 18.8402, "lon": 98.9644, 
-        "url": "https://maps.app.goo.gl/9yG4PszL5Z6VqY7v5",
+        "url": "https://maps.app.goo.gl/Rx8sPD8MbubymMqB7",
         "price": "60 THB/hr", 
         "type": "Public",
         "desc_en": "The largest facility in town with 11 hard courts and practice walls. Great for finding partners in the evenings.",
