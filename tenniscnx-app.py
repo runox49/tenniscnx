@@ -107,7 +107,7 @@ for i, court in enumerate(data):
         with st.container(border=True):
             if lang == "English":
                 st.subheader(court["name_en"])
-                st.write(f"📍 **Location:** {court['type']}")
+                st.write(f"📍 **Type:** {court['type']}")
                 st.write(court["desc_en"])
                 st.write(f"💰 **Price:** {court['price']}")
                 st.link_button("📍 Open in Google Maps", court["url"])
